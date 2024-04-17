@@ -30,6 +30,7 @@ class Player extends FlxSprite
 	var right:FlxActionDigital;
 
 	var dash:FlxActionDigital;
+	var attack:FlxActionDigital;
 
 	var moveAnalog:FlxActionAnalog;
 
@@ -55,9 +56,15 @@ class Player extends FlxSprite
 		maxVelocity.set(maxVel_X, maxVel_Y);
 		drag.set(maxVelocity.x * 4, maxVelocity.y * 4);
 
-		Reg.playerRect = new FlxRect(0, 0, 0, 0);
+		this.setFacingFlip(LEFT, true, false);
+		this.setFacingFlip(RIGHT, false, false);
+
+		Reg.playerAtkHitbox = new FlxObject(0, 0, 0, 0);
 		Reg.playerRectObject = new FlxObject(0, 0, 0, 0);
+		FlxG.state.add(Reg.playerAtkHitbox);
 		FlxG.state.add(Reg.playerRectObject);
+		Reg.playerAtkHitbox.kill();
+		Reg.playerRectObject.kill();
 
 		addInputs();
 
@@ -86,6 +93,9 @@ class Player extends FlxSprite
 		// For Dash
 		dash = new FlxActionDigital();
 
+		// Attack
+		attack = new FlxActionDigital();
+
 		// these actions don't do anything, but their values are exposed in the analog visualizer
 		trigger1 = new FlxActionAnalog();
 		trigger2 = new FlxActionAnalog();
@@ -95,7 +105,7 @@ class Player extends FlxSprite
 
 		if (actions == null)
 			actions = FlxG.inputs.add(new FlxActionManager());
-		actions.addActions([up, down, left, right, dash, trigger1, trigger2, move]);
+		actions.addActions([up, down, left, right, dash, attack, trigger1, trigger2, move]);
 
 		// Add keyboard inputs
 		up.addKey(UP, PRESSED);
@@ -107,6 +117,7 @@ class Player extends FlxSprite
 		right.addKey(RIGHT, PRESSED);
 		right.addKey(D, PRESSED);
 		dash.addKey(SPACE, JUST_PRESSED);
+		attack.addKey(Z, JUST_PRESSED);
 
 		// Add virtual pad (on-screen button) inputs
 		up.addInput(_virtualPad.buttonUp, PRESSED);
@@ -192,6 +203,11 @@ class Player extends FlxSprite
 		{
 			doCommand(Dash);
 		}
+
+		if (attack.triggered)
+		{
+			doCommand(Attack);
+		}
 	}
 
 	function updateAnalog():Void
@@ -212,19 +228,25 @@ class Player extends FlxSprite
 		switch (cmmnd)
 		{
 			case Command.Up:
+				facing = UP;
 				moveY = -1;
 				acceleration.y = -maxVelocity.y * 4;
 			case Command.Down:
+				facing = DOWN;
 				moveY = 1;
 				acceleration.y = maxVelocity.y * 4;
 			case Command.Left:
+				facing = LEFT;
 				moveX = -1;
 				acceleration.x = -maxVelocity.x * 4;
 			case Command.Right:
+				facing = RIGHT;
 				moveX = 1;
 				acceleration.x = maxVelocity.x * 4;
 			case Command.Dash:
 				goDash();
+			case Command.Attack:
+				goAttack();
 		}
 	}
 
@@ -290,6 +312,38 @@ class Player extends FlxSprite
 		Target.putWeak();
 		return Std.int(FlxMath.vectorLength(dx, dy));
 	}
+
+	function goAttack()
+	{
+		if (staminaMP <= 0)
+			return;
+		else
+			staminaMP -= 5;
+
+		trace("attack direction: " + this.facing.toString());
+
+		var posX:Float = this.x;
+		var posY:Float = this.y;
+
+		var h:Float = this.height;
+		var w:Float = this.width;
+
+		switch (this.facing)
+		{
+			case UP:
+				posY -= h;
+			case DOWN:
+				posY += h;
+			case LEFT:
+				posX -= w;
+			case RIGHT:
+				posX += w;
+			case _:
+				null;
+		}
+		Reg.playerAtkHitbox.reset(posX, posY);
+		Reg.playerAtkHitbox.setSize(w, h);
+	}
 }
 
 enum Command
@@ -299,4 +353,5 @@ enum Command
 	Left;
 	Right;
 	Dash;
+	Attack;
 }
