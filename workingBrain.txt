@@ -1,0 +1,19 @@
+Ok, so here is my working brain
+I've got to do critical thinking and ask myself if I prefer a game mechanic that dodges those thangs
+or destroys them / hurts them.
+I'm leaning towards the destroy them thing
+
+Regardless though, I'm thinking of making a hitbox that extends outwards depending on the 
+direction the player is moving in
+
+So, basically, on the dash function, create a FlxPoint from where the player was, to where he is.
+Use that to calculate 
+
+Let's take my time trying to figure this part out, I know I'm on a relatively tight schedule. But when it comes to
+solving problems, I need to take my time and try to think of how to solve these things through critical thinking.
+Bit by bit, if I don't rob myself of solving these problems through frustraition or trying to find the answer quickly
+from the get go. I feel like there is value in solving some of these on my own.
+
+Anyways, There are a couple of bugs that need to be ironed out;
+- When moving from the top right to bottom left, the shape doesn't quite materialize
+- When moving from 
