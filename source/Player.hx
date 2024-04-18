@@ -257,7 +257,7 @@ class Player extends FlxSprite
 
 	function goDash()
 	{
-		if (staminaMP <= 0)
+		if (staminaMP <= 0 || moveX == 0 && moveY == 0)
 			return;
 		else
 			staminaMP -= 15;
