@@ -3,10 +3,28 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
+import flixel.util.FlxColor;
+import flixel.util.FlxSpriteUtil;
+import flixel.util.FlxTimer;
+
+enum EnemyType
+{
+	Rock;
+	Paper;
+	Scissors;
+}
+
+enum EnemyState
+{
+	Idle;
+	Chase;
+	Attack;
+}
 
 class Enemy extends FlxSprite
 {
 	var maxHealth:Int = 3;
+	var currentState:EnemyState = EnemyState.Idle;
 
 	public function new(X:Int = 0, Y:Int = 0)
 	{
@@ -21,20 +39,109 @@ class Enemy extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		updateEnemyState();
+		updateEnemyBehaviour();
 		checkFlxRect();
+		debugEnemy();
+	}
+
+	function debugEnemy()
+	{
+		trace("currentState = " + currentState);
+		trace("attackInProgress = " + attackInProgress);
+	}
+
+	var chaseDistance:Int = 150;
+	var attackDistance:Int = 50;
+
+	function updateEnemyState()
+	{
+		// Check distance between player and enemy
+		if (FlxMath.distanceToPoint(this, Reg.playerPos) <= chaseDistance)
+		{
+			currentState = EnemyState.Chase;
+
+			if (FlxMath.distanceToPoint(this, Reg.playerPos) <= attackDistance)
+			{
+				currentState = EnemyState.Attack;
+			}
+		}
+		else
+		{
+			currentState = EnemyState.Idle;
+		}
+	}
+
+	function updateEnemyBehaviour()
+	{
+		switch (currentState)
+		{
+			case EnemyState.Idle:
+				stayIdle();
+			case EnemyState.Chase:
+				chasePlayer();
+			case EnemyState.Attack:
+				telegraphAttack();
+		}
+	}
+
+	function stayIdle()
+	{
+		this.velocity.set(0, 0);
+	}
+
+	function chasePlayer()
+	{
+		var xDiff = this.x - Reg.playerPos.x;
+		var yDiff = this.y - Reg.playerPos.y;
+
+		var angle = Math.atan2(yDiff, xDiff);
+
+		velocity.y = Math.sin(angle) * -50;
+		velocity.x = Math.cos(angle) * -50;
+	}
+
+	var attackInProgress:Bool = false;
+	var attackCooldown:Float = 3.0;
+
+	function telegraphAttack()
+	{
+		if (attackInProgress)
+			return;
+
+		FlxSpriteUtil.flashTint(this, FlxColor.RED, 0.5);
+		new FlxTimer().start(0.5, function(timer:FlxTimer)
+		{
+			attackPlayer();
+			attackInProgress = true;
+		});
+	}
+
+	function attackPlayer()
+	{
+		var xDiff = this.x - Reg.playerPos.x;
+		var yDiff = this.y - Reg.playerPos.y;
+
+		var angle = Math.atan2(yDiff, xDiff);
+
+		velocity.y = Math.sin(angle) * -250;
+		velocity.x = Math.cos(angle) * -250;
+
+		// Attack cooldown
+		new FlxTimer().start(attackCooldown, function(timer:FlxTimer)
+		{
+			attackInProgress = false;
+		});
 	}
 
 	public function checkFlxRect()
 	{
-		// trace(ID + " ID = " + FlxMath.pointInFlxRect(this.x, this.y, Reg.playerRect));
 		if (FlxG.overlap(this, Reg.playerRectObject))
 		{
-			// trace("Enemy ID " + ID + " is dead");
 			this.kill();
 		}
 		if (FlxG.overlap(this, Reg.playerAtkHitbox))
 		{
-			// trace("Enemy ID " + ID + " HP is " + health);
 			// health--;
 			if (health <= 0)
 				this.kill();

@@ -17,3 +17,9 @@ from the get go. I feel like there is value in solving some of these on my own.
 Anyways, There are a couple of bugs that need to be ironed out;
 - When moving from the top right to bottom left, the shape doesn't quite materialize
 - When moving from 
+
+Let's work on Enemy AI,
+- Enemy needs to move towards you,
+- Once close enough, winds up animation.
+- unleashes attack animation.
+- knock-back animation playback

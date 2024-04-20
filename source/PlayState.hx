@@ -37,6 +37,7 @@ class PlayState extends FlxState
 		add(barSecond);
 
 		FlxG.camera.follow(player, TOPDOWN);
+		FlxG.worldBounds.set(-FlxG.width, -FlxG.height, FlxG.width * 4, FlxG.height * 4);
 
 		enemyGroup = new FlxTypedGroup<Enemy>();
 		add(enemyGroup);
@@ -53,9 +54,7 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
-		// FlxG.collide(player, enemyGroup, function(player:Player, enemy:Enemy)
-		// {
-		// enemy.kill();
-		// });
+		FlxG.collide(player, enemyGroup);
+		FlxG.collide(enemyGroup);
 	}
 }
