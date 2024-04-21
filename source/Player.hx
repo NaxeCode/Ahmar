@@ -335,12 +335,20 @@ class Player extends FlxSprite
 		{
 			case UP:
 				posY -= h;
+				posX -= w / 2;
+				w *= 2;
 			case DOWN:
 				posY += h;
+				posX -= w / 2;
+				w *= 2;
 			case LEFT:
 				posX -= w;
+				posY -= h / 2;
+				h *= 2;
 			case RIGHT:
 				posX += w;
+				posY -= h / 2;
+				h *= 2;
 			case _:
 				null;
 		}
