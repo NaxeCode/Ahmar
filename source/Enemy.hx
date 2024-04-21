@@ -7,13 +7,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxTimer;
 
-enum EnemyType
-{
-	Rock;
-	Paper;
-	Scissors;
-}
-
 enum EnemyState
 {
 	Idle;
@@ -21,8 +14,10 @@ enum EnemyState
 	Attack;
 }
 
-class Enemy extends FlxSprite
+class Enemy extends Entity
 {
+	public var damage:Int = 1;
+
 	var maxHealth:Int = 3;
 	var currentState:EnemyState = EnemyState.Idle;
 
@@ -98,7 +93,7 @@ class Enemy extends FlxSprite
 
 	function chasePlayer()
 	{
-		moveTowardsPlayer(chaseForce, chaseForce);
+		moveTowardsWithForce(this, Reg.player, chaseForce, chaseForce);
 	}
 
 	var attackInProgress:Bool = false;
@@ -119,7 +114,7 @@ class Enemy extends FlxSprite
 
 	function attackPlayer()
 	{
-		moveTowardsPlayer(attackForce, attackForce);
+		moveTowardsWithForce(this, Reg.player, attackForce, attackForce);
 
 		// Attack cooldown
 		new FlxTimer().start(attackCooldown, function(timer:FlxTimer)
@@ -135,7 +130,7 @@ class Enemy extends FlxSprite
 	{
 		if (FlxG.overlap(this, Reg.playerRectObject))
 		{
-			moveTowardsPlayer(knockBackForce * 2, knockBackForce * 2);
+			moveTowardsWithForce(this, Reg.player, knockBackForce * 2, knockBackForce * 2);
 			FlxSpriteUtil.flashTint(this, FlxColor.YELLOW, 0.1);
 			new FlxTimer().start(knockBackCooldown, function(timer:FlxTimer)
 			{
@@ -147,12 +142,10 @@ class Enemy extends FlxSprite
 
 		if (FlxG.overlap(this, Reg.playerAtkHitbox))
 		{
-			// health--;
-			if (health <= 0)
-				this.kill();
+			takeDamage(1);
 
 			this.velocity.set(0, 0);
-			moveTowardsPlayer(knockBackForce, knockBackForce);
+			moveTowardsWithForce(this, Reg.player, knockBackForce, knockBackForce);
 
 			new FlxTimer().start(knockBackCooldown, function(timer:FlxTimer)
 			{
@@ -161,15 +154,5 @@ class Enemy extends FlxSprite
 
 			knockedBack = true;
 		}
-	}
-
-	function moveTowardsPlayer(forceX:Int, forceY:Int)
-	{
-		var xDiff = this.x + this.origin.x - Reg.playerPos.x;
-		var yDiff = this.y + this.origin.y - Reg.playerPos.y;
-
-		var angle = Math.atan2(yDiff, xDiff);
-
-		this.velocity.set(Math.cos(angle) * forceX, Math.sin(angle) * forceY);
 	}
 }

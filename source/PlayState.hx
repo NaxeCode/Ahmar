@@ -9,7 +9,6 @@ import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
 {
-	var player:Player;
 	var enemyGroup:FlxTypedGroup<Enemy>;
 
 	var barHealth:FlxBar;
@@ -21,22 +20,22 @@ class PlayState extends FlxState
 
 		FlxG.debugger.drawDebug = true;
 
-		player = new Player(0, 0);
-		player.health = player.maxHealth;
-		player.staminaMP = player.maxStaminaMP;
-		player.screenCenter();
-		add(player);
+		Reg.player = new Player(0, 0);
+		Reg.player.health = Reg.player.maxHealth;
+		Reg.player.staminaMP = Reg.player.maxStaminaMP;
+		Reg.player.screenCenter();
+		add(Reg.player);
 
-		barHealth = new FlxBar(10, 10, LEFT_TO_RIGHT, 100, 10, player, "health", 0, player.maxHealth);
+		barHealth = new FlxBar(10, 10, LEFT_TO_RIGHT, 100, 10, Reg.player, "health", 0, Reg.player.maxHealth);
 		barHealth.scrollFactor.set(0, 0);
 		add(barHealth);
 
-		barSecond = new FlxBar(10, 25, LEFT_TO_RIGHT, 50, 10, player, "staminaMP", 0, player.maxStaminaMP);
+		barSecond = new FlxBar(10, 25, LEFT_TO_RIGHT, 50, 10, Reg.player, "staminaMP", 0, Reg.player.maxStaminaMP);
 		barSecond.createFilledBar(0xff001253, 0xff0037ff);
 		barSecond.scrollFactor.set(0, 0);
 		add(barSecond);
 
-		FlxG.camera.follow(player, TOPDOWN);
+		FlxG.camera.follow(Reg.player, TOPDOWN);
 		FlxG.worldBounds.set(-FlxG.width, -FlxG.height, FlxG.width * 4, FlxG.height * 4);
 
 		enemyGroup = new FlxTypedGroup<Enemy>();
@@ -54,7 +53,6 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
-		if (!player.playerDashing)
-			FlxG.collide(player, enemyGroup);
+		FlxG.collide(Reg.player, enemyGroup, Reg.player.damageTaken);
 	}
 }

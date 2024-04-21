@@ -23,7 +23,7 @@ enum Command
 	Attack;
 }
 
-class Player extends FlxSprite
+class Player extends Entity
 {
 	public var maxHealth:Int = 100;
 
@@ -408,5 +408,16 @@ class Player extends FlxSprite
 		{
 			Reg.playerAtkHitbox.kill();
 		});
+	}
+
+	public function damageTaken(player:Player, enemy:Enemy):Void
+	{
+		if (playerDashing)
+			return;
+
+		this.health -= enemy.damage;
+
+		if (this.health <= 0)
+			this.kill();
 	}
 }

@@ -6,6 +6,7 @@ import flixel.math.FlxRect;
 
 class Reg
 {
+	public static var player:Player;
 	public static var playerRectObject:FlxObject;
 	public static var playerAtkHitbox:FlxObject;
 	public static var playerPos:FlxPoint;
