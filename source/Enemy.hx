@@ -26,6 +26,10 @@ class Enemy extends FlxSprite
 	var maxHealth:Int = 3;
 	var currentState:EnemyState = EnemyState.Idle;
 
+	var chaseForce:Int = -50;
+	var attackForce:Int = -250;
+	var knockBackForce:Int = 500;
+
 	public function new(X:Int = 0, Y:Int = 0)
 	{
 		super(X, Y);
@@ -41,7 +45,7 @@ class Enemy extends FlxSprite
 		super.update(elapsed);
 		updateEnemyState();
 		updateEnemyBehaviour();
-		checkFlxRect();
+		checkKnockBack();
 		debugEnemy();
 	}
 
@@ -79,9 +83,11 @@ class Enemy extends FlxSprite
 			case EnemyState.Idle:
 				stayIdle();
 			case EnemyState.Chase:
-				chasePlayer();
+				if (!knockedBack)
+					chasePlayer();
 			case EnemyState.Attack:
-				telegraphAttack();
+				if (!knockedBack)
+					telegraphAttack();
 		}
 	}
 
@@ -92,7 +98,7 @@ class Enemy extends FlxSprite
 
 	function chasePlayer()
 	{
-		moveTowardsPlayer(-50, -50);
+		moveTowardsPlayer(chaseForce, chaseForce);
 	}
 
 	var attackInProgress:Bool = false;
@@ -113,7 +119,7 @@ class Enemy extends FlxSprite
 
 	function attackPlayer()
 	{
-		moveTowardsPlayer(-250, -250);
+		moveTowardsPlayer(attackForce, attackForce);
 
 		// Attack cooldown
 		new FlxTimer().start(attackCooldown, function(timer:FlxTimer)
@@ -122,7 +128,10 @@ class Enemy extends FlxSprite
 		});
 	}
 
-	public function checkFlxRect()
+	var knockBackCooldown:Float = 2.0;
+	var knockedBack:Bool = false;
+
+	public function checkKnockBack()
 	{
 		if (FlxG.overlap(this, Reg.playerRectObject))
 			this.kill();
@@ -133,9 +142,17 @@ class Enemy extends FlxSprite
 			if (health <= 0)
 				this.kill();
 
-			moveTowardsPlayer(100, 100);
+			this.velocity.set(0, 0);
+			moveTowardsPlayer(knockBackForce, knockBackForce);
 
 			Reg.playerAtkHitbox.kill();
+
+			new FlxTimer().start(knockBackCooldown, function(timer:FlxTimer)
+			{
+				knockedBack = false;
+			});
+
+			knockedBack = true;
 		}
 	}
 

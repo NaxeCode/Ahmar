@@ -55,6 +55,5 @@ class PlayState extends FlxState
 		super.update(elapsed);
 
 		FlxG.collide(player, enemyGroup);
-		FlxG.collide(enemyGroup);
 	}
 }

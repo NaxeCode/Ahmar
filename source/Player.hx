@@ -55,6 +55,7 @@ class Player extends FlxSprite
 
 		maxVelocity.set(maxVel_X, maxVel_Y);
 		drag.set(maxVelocity.x * 4, maxVelocity.y * 4);
+		this.immovable = true;
 
 		this.setFacingFlip(LEFT, true, false);
 		this.setFacingFlip(RIGHT, false, false);
