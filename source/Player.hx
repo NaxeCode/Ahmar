@@ -59,7 +59,7 @@ class Player extends FlxSprite
 		this.setFacingFlip(LEFT, true, false);
 		this.setFacingFlip(RIGHT, false, false);
 
-		Reg.playerPos = new FlxPoint(X, Y);
+		Reg.playerPos = new FlxPoint(X + this.origin.x, Y + this.origin.y);
 		Reg.playerAtkHitbox = new FlxObject(0, 0, 0, 0);
 		Reg.playerRectObject = new FlxObject(0, 0, 0, 0);
 		FlxG.state.add(Reg.playerAtkHitbox);
@@ -155,7 +155,7 @@ class Player extends FlxSprite
 
 		updateDigital();
 		updateAnalog();
-		Reg.playerPos.set(this.x, this.y);
+		Reg.playerPos.set(this.x + this.origin.x, this.y + this.origin.y);
 
 		super.update(elapsed);
 	}

@@ -92,13 +92,7 @@ class Enemy extends FlxSprite
 
 	function chasePlayer()
 	{
-		var xDiff = this.x - Reg.playerPos.x;
-		var yDiff = this.y - Reg.playerPos.y;
-
-		var angle = Math.atan2(yDiff, xDiff);
-
-		velocity.y = Math.sin(angle) * -50;
-		velocity.x = Math.cos(angle) * -50;
+		moveTowardsPlayer(-50, -50);
 	}
 
 	var attackInProgress:Bool = false;
@@ -119,13 +113,7 @@ class Enemy extends FlxSprite
 
 	function attackPlayer()
 	{
-		var xDiff = this.x - Reg.playerPos.x;
-		var yDiff = this.y - Reg.playerPos.y;
-
-		var angle = Math.atan2(yDiff, xDiff);
-
-		velocity.y = Math.sin(angle) * -250;
-		velocity.x = Math.cos(angle) * -250;
+		moveTowardsPlayer(-250, -250);
 
 		// Attack cooldown
 		new FlxTimer().start(attackCooldown, function(timer:FlxTimer)
@@ -137,25 +125,27 @@ class Enemy extends FlxSprite
 	public function checkFlxRect()
 	{
 		if (FlxG.overlap(this, Reg.playerRectObject))
-		{
 			this.kill();
-		}
+
 		if (FlxG.overlap(this, Reg.playerAtkHitbox))
 		{
 			// health--;
 			if (health <= 0)
 				this.kill();
 
-			var xDiff = this.x - Reg.playerPos.x;
-			var yDiff = this.y - Reg.playerPos.y;
-
-			var angle = Math.atan2(yDiff, xDiff);
-			trace(angle);
-
-			velocity.y = Math.sin(angle) * 100;
-			velocity.x = Math.cos(angle) * 100;
+			moveTowardsPlayer(100, 100);
 
 			Reg.playerAtkHitbox.kill();
 		}
+	}
+
+	function moveTowardsPlayer(forceX:Int, forceY:Int)
+	{
+		var xDiff = this.x + this.origin.x - Reg.playerPos.x;
+		var yDiff = this.y + this.origin.y - Reg.playerPos.y;
+
+		var angle = Math.atan2(yDiff, xDiff);
+
+		this.velocity.set(Math.cos(angle) * forceX, Math.sin(angle) * forceY);
 	}
 }
