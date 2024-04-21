@@ -22,6 +22,8 @@ class Player extends FlxSprite
 
 	static inline var MOVEMENT_SPEED:Int = 2;
 
+	public var playerDashing:Bool = false;
+
 	static var actions:FlxActionManager;
 
 	var up:FlxActionDigital;
@@ -260,6 +262,8 @@ class Player extends FlxSprite
 
 	function goDash()
 	{
+		playerDashing = true;
+
 		if (staminaMP <= 0 || moveX == 0 && moveY == 0)
 			return;
 		else
@@ -299,6 +303,7 @@ class Player extends FlxSprite
 			Reg.playerRectObject.reset(pointA_X, pointA_Y);
 			Reg.playerRectObject.setSize(w + width, h + height);
 			// FlxG.state.add(new FlxSprite(pointA_X, pointA_Y).makeGraphic(w, h, 0x500000ff));
+			playerDashing = false;
 		});
 	}
 
