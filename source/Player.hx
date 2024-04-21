@@ -303,6 +303,10 @@ class Player extends FlxSprite
 			Reg.playerRectObject.reset(pointA_X, pointA_Y);
 			Reg.playerRectObject.setSize(w + width, h + height);
 			// FlxG.state.add(new FlxSprite(pointA_X, pointA_Y).makeGraphic(w, h, 0x500000ff));
+			new FlxTimer().start(dashDuration, function(timer:FlxTimer)
+			{
+				Reg.playerRectObject.kill();
+			});
 			playerDashing = false;
 		});
 	}

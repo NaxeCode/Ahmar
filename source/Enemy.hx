@@ -134,7 +134,16 @@ class Enemy extends FlxSprite
 	public function checkKnockBack()
 	{
 		if (FlxG.overlap(this, Reg.playerRectObject))
-			this.kill();
+		{
+			moveTowardsPlayer(knockBackForce * 2, knockBackForce * 2);
+			FlxSpriteUtil.flashTint(this, FlxColor.YELLOW, 0.1);
+			new FlxTimer().start(knockBackCooldown, function(timer:FlxTimer)
+			{
+				knockedBack = false;
+			});
+
+			knockedBack = true;
+		}
 
 		if (FlxG.overlap(this, Reg.playerAtkHitbox))
 		{
