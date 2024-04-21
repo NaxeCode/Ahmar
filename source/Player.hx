@@ -354,6 +354,11 @@ class Player extends FlxSprite
 		}
 		Reg.playerAtkHitbox.reset(posX, posY);
 		Reg.playerAtkHitbox.setSize(w, h);
+
+		new FlxTimer().start(0.10, function(timer:FlxTimer)
+		{
+			Reg.playerAtkHitbox.kill();
+		});
 	}
 }
 

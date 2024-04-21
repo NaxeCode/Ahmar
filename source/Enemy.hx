@@ -28,7 +28,7 @@ class Enemy extends FlxSprite
 
 	var chaseForce:Int = -50;
 	var attackForce:Int = -250;
-	var knockBackForce:Int = 500;
+	var knockBackForce:Int = 300;
 
 	public function new(X:Int = 0, Y:Int = 0)
 	{
@@ -144,8 +144,6 @@ class Enemy extends FlxSprite
 
 			this.velocity.set(0, 0);
 			moveTowardsPlayer(knockBackForce, knockBackForce);
-
-			Reg.playerAtkHitbox.kill();
 
 			new FlxTimer().start(knockBackCooldown, function(timer:FlxTimer)
 			{
