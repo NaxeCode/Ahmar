@@ -55,8 +55,8 @@ class Enemy extends FlxSprite
 		trace("attackInProgress = " + attackInProgress);
 	}
 
-	var chaseDistance:Int = 150;
-	var attackDistance:Int = 50;
+	var chaseDistance:Int = 175;
+	var attackDistance:Int = 100;
 
 	function updateEnemyState()
 	{

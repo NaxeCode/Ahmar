@@ -41,7 +41,7 @@ class PlayState extends FlxState
 
 		enemyGroup = new FlxTypedGroup<Enemy>();
 		add(enemyGroup);
-		for (i in 0...5)
+		for (i in 0...1)
 		{
 			var w = FlxG.random.int(50, FlxG.width - 50);
 			var h = FlxG.random.int(FlxG.height - 50, 50);

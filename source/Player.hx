@@ -13,6 +13,16 @@ import flixel.ui.FlxVirtualPad;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
+enum Command
+{
+	Up;
+	Down;
+	Left;
+	Right;
+	Dash;
+	Attack;
+}
+
 class Player extends FlxSprite
 {
 	public var maxHealth:Int = 100;
@@ -53,26 +63,41 @@ class Player extends FlxSprite
 	{
 		super(X, Y);
 
-		makeGraphic(24, 34, 0xffaa1111);
+		renderPlayer();
+		setPhysics();
+		initPlayerReg();
+		startStaminaRegen();
+		addInputs();
+	}
 
+	function renderPlayer()
+	{
+		makeGraphic(24, 34, 0xffaa1111);
+		this.setFacingFlip(LEFT, true, false);
+		this.setFacingFlip(RIGHT, false, false);
+	}
+
+	function setPhysics()
+	{
 		maxVelocity.set(maxVel_X, maxVel_Y);
 		drag.set(maxVelocity.x * 4, maxVelocity.y * 4);
 		this.immovable = true;
+	}
 
-		this.setFacingFlip(LEFT, true, false);
-		this.setFacingFlip(RIGHT, false, false);
-
-		Reg.playerPos = new FlxPoint(X + this.origin.x, Y + this.origin.y);
+	function initPlayerReg()
+	{
+		Reg.playerPos = new FlxPoint(this.x + this.origin.x, this.y + this.origin.y);
 		Reg.playerAtkHitbox = new FlxObject(0, 0, 0, 0);
 		Reg.playerRectObject = new FlxObject(0, 0, 0, 0);
 		FlxG.state.add(Reg.playerAtkHitbox);
 		FlxG.state.add(Reg.playerRectObject);
 		Reg.playerAtkHitbox.kill();
 		Reg.playerRectObject.kill();
+	}
 
-		addInputs();
-
-		new FlxTimer().start(0.15, function(timer:FlxTimer)
+	function startStaminaRegen()
+	{
+		new FlxTimer().start(1, function(timer:FlxTimer)
 		{
 			if (this.staminaMP < this.maxStaminaMP)
 				this.staminaMP += 1;
@@ -158,13 +183,17 @@ class Player extends FlxSprite
 
 	public override function update(elapsed:Float):Void
 	{
-		acceleration.set(0, 0);
-
+		updateMovement();
 		updateDigital();
 		updateAnalog();
-		Reg.playerPos.set(this.x + this.origin.x, this.y + this.origin.y);
+		updateReg();
 
 		super.update(elapsed);
+	}
+
+	function updateMovement():Void
+	{
+		acceleration.set(0, 0);
 	}
 
 	function updateDigital():Void
@@ -242,6 +271,11 @@ class Player extends FlxSprite
 		// moveY = move.y;
 	}
 
+	function updateReg():Void
+	{
+		Reg.playerPos.set(this.x + this.origin.x, this.y + this.origin.y);
+	}
+
 	function doCommand(cmmnd:Command)
 	{
 		switch (cmmnd)
@@ -269,13 +303,13 @@ class Player extends FlxSprite
 		}
 	}
 
-	var pointA_X:Float = 0;
-	var pointA_Y:Float = 0;
-	var pointB_X:Float = 0;
-	var pointB_Y:Float = 0;
-
 	function goDash()
 	{
+		var pointA_X:Float = 0;
+		var pointA_Y:Float = 0;
+		var pointB_X:Float = 0;
+		var pointB_Y:Float = 0;
+
 		playerDashing = true;
 
 		if (staminaMP <= 0 || moveX == 0 && moveY == 0)
@@ -299,7 +333,7 @@ class Player extends FlxSprite
 		velocity.x = dashDirection.x * dashSpeed;
 		velocity.y = dashDirection.y * dashSpeed;
 
-		FlxG.camera.shake(0.01, dashDuration, function() {});
+		FlxG.camera.shake(0.01, dashDuration);
 		new FlxTimer().start(0.15, function(timer:FlxTimer)
 		{
 			pointB_X = this.x;
@@ -329,14 +363,6 @@ class Player extends FlxSprite
 	{
 		var dx:Float = (num1) - (num2);
 		return Std.int(Math.sqrt(dx * dx));
-	}
-
-	function distanceToPoint(Base:FlxPoint, Target:FlxPoint):Int
-	{
-		var dx:Float = (Base.x) - Target.x;
-		var dy:Float = (Base.y) - Target.y;
-		Target.putWeak();
-		return Std.int(FlxMath.vectorLength(dx, dy));
 	}
 
 	function goAttack()
@@ -383,14 +409,4 @@ class Player extends FlxSprite
 			Reg.playerAtkHitbox.kill();
 		});
 	}
-}
-
-enum Command
-{
-	Up;
-	Down;
-	Left;
-	Right;
-	Dash;
-	Attack;
 }

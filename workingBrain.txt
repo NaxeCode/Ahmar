@@ -23,3 +23,7 @@ Let's work on Enemy AI,
 - Once close enough, winds up animation.
 - unleashes attack animation.
 - knock-back animation playback
+
+First of all, I need to make it so that:
+- If player comes into contact with Enemy, they get hurt and knockback
+- Organize player code for better readability
