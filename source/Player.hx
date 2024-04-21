@@ -81,12 +81,14 @@ class Player extends FlxSprite
 
 	function addInputs():Void
 	{
+		#if mobile
 		// Add on screen virtual pad to demonstrate UI buttons tied to actions
 		_virtualPad = new FlxVirtualPad(FULL, NONE);
 		_virtualPad.alpha = 0.15;
 		_virtualPad.x += 10;
 		_virtualPad.y -= 10;
 		FlxG.state.add(_virtualPad);
+		#end
 
 		// digital actions allow for on/off directional movement
 		up = new FlxActionDigital();
@@ -123,11 +125,13 @@ class Player extends FlxSprite
 		dash.addKey(SPACE, JUST_PRESSED);
 		attack.addKey(Z, JUST_PRESSED);
 
+		#if mobile
 		// Add virtual pad (on-screen button) inputs
 		up.addInput(_virtualPad.buttonUp, PRESSED);
 		down.addInput(_virtualPad.buttonDown, PRESSED);
 		left.addInput(_virtualPad.buttonLeft, PRESSED);
 		right.addInput(_virtualPad.buttonRight, PRESSED);
+		#end
 
 		// Add gamepad DPAD inputs
 		up.addGamepad(DPAD_UP, PRESSED);
@@ -165,21 +169,27 @@ class Player extends FlxSprite
 
 	function updateDigital():Void
 	{
+		#if mobile
 		_virtualPad.buttonUp.color = FlxColor.WHITE;
 		_virtualPad.buttonDown.color = FlxColor.WHITE;
 		_virtualPad.buttonLeft.color = FlxColor.WHITE;
 		_virtualPad.buttonRight.color = FlxColor.WHITE;
+		#end
 
 		if (up.triggered && down.triggered)
 			moveY = 0;
 		else if (up.triggered)
 		{
+			#if mobile
 			_virtualPad.buttonUp.color = FlxColor.LIME;
+			#end
 			doCommand(Up);
 		}
 		else if (down.triggered)
 		{
+			#if mobile
 			_virtualPad.buttonDown.color = FlxColor.LIME;
+			#end
 			doCommand(Down);
 		}
 		else
@@ -191,12 +201,16 @@ class Player extends FlxSprite
 			moveX = 0;
 		else if (left.triggered)
 		{
+			#if mobile
 			_virtualPad.buttonLeft.color = FlxColor.LIME;
+			#end
 			doCommand(Left);
 		}
 		else if (right.triggered)
 		{
+			#if mobile
 			_virtualPad.buttonRight.color = FlxColor.LIME;
+			#end
 			doCommand(Right);
 		}
 		else
