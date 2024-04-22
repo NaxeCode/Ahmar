@@ -27,3 +27,37 @@ Let's work on Enemy AI,
 First of all, I need to make it so that:
 - If player comes into contact with Enemy, they get hurt and knockback
 - Organize player code for better readability
+
+Let's seperate this todo into 2 sections, Enemy and player
+
+Player ==
+- Upon colliding or intersecting with an Enemy, player looses health, get's knocked back [X]
+- Player is invincible for 0.5 seconds after getting hit.
+- Setup Player spawn type (Rock, Paper, Scissors)
+- Setup RPS modifiers (Dmg, Defense, Health, Stamina)
+
+===
+
+Stage ==
+- Add text on screen representing the following:
+-- Player HP amount
+-- Player Stamina amount
+-- Player Damage Power
+-- Player Defense Power
+-- Player current "Type" (Rock, Paper, or Scissors)
+-- Player modified Damage Power and Defense Power against X type Enemy
+-- Current Wave Count
+-- Current Wave Enemy Type Information, "how many enemies are left of X Y and Z type"
+
+===
+
+
+Enemy ==
+- Add healthbar to Enemy
+- Upon taking damage, make Enemy "flash" (add a function that controls damage taken)
+- Add regular attack in addition to "Rush" attack
+- Setup Enemy spawn type (Rock, Paper, Scissors) Color code each type
+- Have their type affect Player conditions, Damage dealt + defense modifier
+- Implement "waves" into the game, Add option to change from "Steady Waves" to "Mixed Waves".
+
+===

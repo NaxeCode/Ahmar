@@ -104,7 +104,7 @@ class Enemy extends Entity
 		if (attackInProgress)
 			return;
 
-		FlxSpriteUtil.flashTint(this, FlxColor.RED, 0.5);
+		// FlxSpriteUtil.flashTint(this, FlxColor.RED, 0.5);
 		new FlxTimer().start(0.5, function(timer:FlxTimer)
 		{
 			attackPlayer();
@@ -131,7 +131,7 @@ class Enemy extends Entity
 		if (FlxG.overlap(this, Reg.playerRectObject))
 		{
 			moveTowardsWithForce(this, Reg.player, knockBackForce * 2, knockBackForce * 2);
-			FlxSpriteUtil.flashTint(this, FlxColor.YELLOW, 0.1);
+			// FlxSpriteUtil.flashTint(this, FlxColor.YELLOW, 0.1);
 			new FlxTimer().start(knockBackCooldown, function(timer:FlxTimer)
 			{
 				knockedBack = false;

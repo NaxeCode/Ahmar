@@ -38,7 +38,10 @@ class Entity extends FlxSprite
 			this.kill();
 	}
 
-	function knockBack(sprite:FlxSprite):Void {}
+	function knockBackFrom(sprite:FlxSprite):Void
+	{
+		moveTowardsWithForce(this, sprite, 300, 300);
+	}
 
 	function moveTowardsWithForce(objCurrent:FlxSprite, objTarget:FlxSprite, forceX:Int, forceY:Int)
 	{

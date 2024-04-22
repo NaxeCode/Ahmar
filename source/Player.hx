@@ -419,5 +419,7 @@ class Player extends Entity
 
 		if (this.health <= 0)
 			this.kill();
+
+		knockBackFrom(enemy);
 	}
 }
