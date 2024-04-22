@@ -64,6 +64,7 @@ class Player extends Entity
 		initPlayerReg();
 		startStaminaRegen();
 		addInputs();
+		addHealthBar(state);
 	}
 
 	function renderPlayer()

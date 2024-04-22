@@ -11,6 +11,7 @@ class PlayState extends FlxState
 {
 	var enemyGroup:FlxTypedGroup<Enemy>;
 
+	var barHealth:FlxBar;
 	var barSecond:FlxBar;
 
 	override public function create()

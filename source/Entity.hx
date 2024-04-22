@@ -33,14 +33,13 @@ class Entity extends FlxSprite
 	public function new(X:Int, Y:Int, state:FlxState)
 	{
 		super(X, Y);
-
 		addHealthBar(state);
 	}
 
 	function addHealthBar(currentState:FlxState)
 	{
-		barHealth = new FlxBar(10, 10, LEFT_TO_RIGHT, 100, 10, Reg.player, "health", 0, maxHealth);
-		barHealth.scrollFactor.set(0, 0);
+		barHealth = new FlxBar(0, 0, LEFT_TO_RIGHT, 50, 3, this, "health", 0, maxHealth);
+		barHealth.trackParent(-13, -10);
 		currentState.add(barHealth);
 	}
 
