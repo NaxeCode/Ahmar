@@ -56,6 +56,7 @@ Enemy ==
 - Add healthbar to Enemy
 - Upon taking damage, make Enemy "flash" (add a function that controls damage taken)
 - Add regular attack in addition to "Rush" attack
+- For "Rush" attack, if hit player, kill momentum, as the player will be invincible
 - Setup Enemy spawn type (Rock, Paper, Scissors) Color code each type
 - Have their type affect Player conditions, Damage dealt + defense modifier
 - Implement "waves" into the game, Add option to change from "Steady Waves" to "Mixed Waves".

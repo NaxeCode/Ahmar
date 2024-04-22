@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.FlxState;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
@@ -18,16 +19,15 @@ class Enemy extends Entity
 {
 	public var damage:Int = 1;
 
-	var maxHealth:Int = 3;
 	var currentState:EnemyState = EnemyState.Idle;
 
 	var chaseForce:Int = -50;
 	var attackForce:Int = -250;
 	var knockBackForce:Int = 300;
 
-	public function new(X:Int = 0, Y:Int = 0)
+	public function new(X:Int = 0, Y:Int = 0, state:FlxState)
 	{
-		super(X, Y);
+		super(X, Y, state);
 
 		makeGraphic(16, 16, 0xff00ff00);
 		health = maxHealth;

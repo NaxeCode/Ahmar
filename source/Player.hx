@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.FlxState;
 import flixel.input.actions.FlxAction.FlxActionAnalog;
 import flixel.input.actions.FlxAction.FlxActionDigital;
 import flixel.input.actions.FlxActionManager;
@@ -25,11 +26,6 @@ enum Command
 
 class Player extends Entity
 {
-	public var maxHealth:Int = 100;
-
-	public var maxStaminaMP:Int = 50;
-	public var staminaMP:Int = 50;
-
 	static inline var MOVEMENT_SPEED:Int = 2;
 
 	public var playerDashing:Bool = false;
@@ -59,9 +55,9 @@ class Player extends Entity
 	var maxVel_X:Int = 200;
 	var maxVel_Y:Int = 220;
 
-	public function new(X:Int, Y:Int)
+	public function new(X:Int, Y:Int, state:FlxState)
 	{
-		super(X, Y);
+		super(X, Y, state);
 
 		renderPlayer();
 		setPhysics();
