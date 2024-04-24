@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxBasic;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.ui.FlxBar;
@@ -36,7 +37,7 @@ class PlayState extends FlxState
 
 		enemyGroup = new FlxTypedGroup<Enemy>();
 		add(enemyGroup);
-		for (i in 0...1)
+		for (i in 0...4)
 		{
 			var w = FlxG.random.int(50, FlxG.width - 50);
 			var h = FlxG.random.int(FlxG.height - 50, 50);
@@ -49,6 +50,30 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
-		FlxG.collide(Reg.player, enemyGroup, Reg.player.damageTaken);
+		handleCollisions();
+	}
+
+	function handleCollisions()
+	{
+		if (!Reg.player.playerDashing)
+			FlxG.collide(Reg.player, enemyGroup, Reg.player.damageTaken);
+
+		FlxG.overlap(enemyGroup, Reg.playerDashHitbox, handleOverlap);
+		FlxG.overlap(enemyGroup, Reg.playerAtkHitbox, handleOverlap);
+	}
+
+	function handleOverlap(enemy:Enemy, hitbox:FlxObject)
+	{
+		if (enemy.knockedBack)
+			return;
+
+		enemy.damageTaken(enemy, Reg.player);
+
+		new FlxTimer().start(2.5, function(timer:FlxTimer)
+		{
+			enemy.knockedBack = false;
+		});
+
+		enemy.knockedBack = true;
 	}
 }

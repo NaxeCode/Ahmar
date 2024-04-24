@@ -40,7 +40,6 @@ class Enemy extends Entity
 		super.update(elapsed);
 		updateEnemyState();
 		updateEnemyBehaviour();
-		checkKnockBack();
 		debugEnemy();
 	}
 
@@ -73,16 +72,19 @@ class Enemy extends Entity
 
 	function updateEnemyBehaviour()
 	{
+		if (knockedBack)
+		{
+			stayIdle();
+			return;
+		}
 		switch (currentState)
 		{
 			case EnemyState.Idle:
 				stayIdle();
 			case EnemyState.Chase:
-				if (!knockedBack)
-					chasePlayer();
+				chasePlayer();
 			case EnemyState.Attack:
-				if (!knockedBack)
-					telegraphAttack();
+				telegraphAttack();
 		}
 	}
 
@@ -97,7 +99,7 @@ class Enemy extends Entity
 	}
 
 	var attackInProgress:Bool = false;
-	var attackCooldown:Float = 3.0;
+	var attackCooldown:Float = 5.0;
 
 	function telegraphAttack()
 	{
@@ -121,38 +123,5 @@ class Enemy extends Entity
 		{
 			attackInProgress = false;
 		});
-	}
-
-	var knockBackCooldown:Float = 2.0;
-	var knockedBack:Bool = false;
-
-	public function checkKnockBack()
-	{
-		if (FlxG.overlap(this, Reg.playerRectObject))
-		{
-			moveTowardsWithForce(this, Reg.player, knockBackForce * 2, knockBackForce * 2);
-			// FlxSpriteUtil.flashTint(this, FlxColor.YELLOW, 0.1);
-			new FlxTimer().start(knockBackCooldown, function(timer:FlxTimer)
-			{
-				knockedBack = false;
-			});
-
-			knockedBack = true;
-		}
-
-		if (FlxG.overlap(this, Reg.playerAtkHitbox))
-		{
-			takeDamage(1);
-
-			this.velocity.set(0, 0);
-			moveTowardsWithForce(this, Reg.player, knockBackForce, knockBackForce);
-
-			new FlxTimer().start(knockBackCooldown, function(timer:FlxTimer)
-			{
-				knockedBack = false;
-			});
-
-			knockedBack = true;
-		}
 	}
 }

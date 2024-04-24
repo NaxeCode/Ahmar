@@ -1,8 +1,10 @@
 package;
 
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.ui.FlxBar;
+import flixel.util.FlxTimer;
 
 /**
 	* Things all entities in the game will have in common.
@@ -22,13 +24,17 @@ class Entity extends FlxSprite
 {
 	var barHealth:FlxBar;
 
-	public var maxHealth:Int = 100;
+	public var maxHealth:Int = 25;
 
 	public var maxStaminaMP:Int = 50;
 	public var staminaMP:Int = 50;
 
-	var dmgPower:Int = 1;
+	var dmgPower:Int = 3;
 	var defPower:Int = 1;
+	var knockBackPower:Int = 300;
+
+	public var knockedBack:Bool = false;
+	public var knockBackCooldown:Float = 1.0;
 
 	public function new(X:Int, Y:Int, state:FlxState)
 	{
@@ -46,18 +52,59 @@ class Entity extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		flashOnKnockback(elapsed);
 	}
 
-	function takeDamage(damage:Int)
+	function flashOnKnockback(elapsed:Float)
 	{
-		health -= damage;
-		if (health <= 0)
-			this.kill();
+		if (knockedBack)
+		{
+			if (this.alpha == 1)
+				this.alpha = 0.25;
+			else
+				this.alpha = 1;
+		}
+		else
+			this.alpha = 1;
 	}
 
-	function knockBackFrom(sprite:FlxSprite):Void
+	public function handleOverlap(enemy:Enemy, hitbox:FlxObject)
 	{
-		moveTowardsWithForce(this, sprite, 300, 300);
+		if (enemy.knockedBack)
+			return;
+
+		enemy.damageTaken(enemy, Reg.player);
+
+		damageCooldown();
+	}
+
+	public function damageTaken(objTakingDmg:Entity, objGivingDmg:Entity):Void
+	{
+		if (knockedBack)
+			return;
+		objTakingDmg.health -= objGivingDmg.dmgPower;
+
+		if (objTakingDmg.health <= 0)
+			objTakingDmg.kill();
+
+		knockBackFrom(objTakingDmg, objGivingDmg);
+		damageCooldown();
+	}
+
+	function damageCooldown()
+	{
+		new FlxTimer().start(knockBackCooldown, function(timer:FlxTimer)
+		{
+			knockedBack = false;
+		});
+
+		knockedBack = true;
+	}
+
+	function knockBackFrom(objEffected:Entity, objMovingAwayFrom:Entity):Void
+	{
+		moveTowardsWithForce(objEffected, objMovingAwayFrom, objMovingAwayFrom.knockBackPower, objMovingAwayFrom.knockBackPower);
 	}
 
 	function moveTowardsWithForce(objCurrent:FlxSprite, objTarget:FlxSprite, forceX:Int, forceY:Int)

@@ -53,7 +53,7 @@ Stage ==
 
 
 Enemy ==
-- Add healthbar to Enemy
+- Add healthbar to Enemy [X]
 - Upon taking damage, make Enemy "flash" (add a function that controls damage taken)
 - Add regular attack in addition to "Rush" attack
 - For "Rush" attack, if hit player, kill momentum, as the player will be invincible

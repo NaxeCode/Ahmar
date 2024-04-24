@@ -55,6 +55,10 @@ class Player extends Entity
 	var maxVel_X:Int = 200;
 	var maxVel_Y:Int = 220;
 
+	// In seconds...
+	var staminaRegenEvery:Float = 0.5;
+	var staminaRegenAmount:Int = 5;
+
 	public function new(X:Int, Y:Int, state:FlxState)
 	{
 		super(X, Y, state);
@@ -85,19 +89,19 @@ class Player extends Entity
 	{
 		Reg.playerPos = new FlxPoint(this.x + this.origin.x, this.y + this.origin.y);
 		Reg.playerAtkHitbox = new FlxObject(0, 0, 0, 0);
-		Reg.playerRectObject = new FlxObject(0, 0, 0, 0);
+		Reg.playerDashHitbox = new FlxObject(0, 0, 0, 0);
 		FlxG.state.add(Reg.playerAtkHitbox);
-		FlxG.state.add(Reg.playerRectObject);
+		FlxG.state.add(Reg.playerDashHitbox);
 		Reg.playerAtkHitbox.kill();
-		Reg.playerRectObject.kill();
+		Reg.playerDashHitbox.kill();
 	}
 
 	function startStaminaRegen()
 	{
-		new FlxTimer().start(1, function(timer:FlxTimer)
+		new FlxTimer().start(staminaRegenEvery, function(timer:FlxTimer)
 		{
 			if (this.staminaMP < this.maxStaminaMP)
-				this.staminaMP += 1;
+				this.staminaMP += staminaRegenAmount;
 		}, 0);
 	}
 
@@ -345,12 +349,12 @@ class Player extends Entity
 				pointA_X = this.x;
 			if (moveY < 0)
 				pointA_Y = this.y;
-			Reg.playerRectObject.reset(pointA_X, pointA_Y);
-			Reg.playerRectObject.setSize(w + width, h + height);
+			Reg.playerDashHitbox.reset(pointA_X, pointA_Y);
+			Reg.playerDashHitbox.setSize(w + width, h + height);
 			// FlxG.state.add(new FlxSprite(pointA_X, pointA_Y).makeGraphic(w, h, 0x500000ff));
 			new FlxTimer().start(dashDuration, function(timer:FlxTimer)
 			{
-				Reg.playerRectObject.kill();
+				Reg.playerDashHitbox.kill();
 			});
 			playerDashing = false;
 		});
@@ -407,16 +411,8 @@ class Player extends Entity
 		});
 	}
 
-	public function damageTaken(player:Player, enemy:Enemy):Void
+	override function damageTaken(obj1:Entity, obj2:Entity)
 	{
-		if (playerDashing)
-			return;
-
-		this.health -= enemy.damage;
-
-		if (this.health <= 0)
-			this.kill();
-
-		knockBackFrom(enemy);
+		super.damageTaken(obj1, obj2);
 	}
 }
