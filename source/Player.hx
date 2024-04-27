@@ -26,6 +26,10 @@ enum Command
 
 class Player extends Entity
 {
+	public var inAttackState:Bool = false;
+
+	var attackStateTimer:FlxTimer;
+
 	static inline var MOVEMENT_SPEED:Int = 2;
 
 	public var playerDashing:Bool = false;
@@ -374,6 +378,20 @@ class Player extends Entity
 			staminaMP -= 5;
 
 		trace("attack direction: " + this.facing.toString());
+
+		if (attackStateTimer == null)
+		{
+			inAttackState = true;
+			attackStateTimer = new FlxTimer().start(2, function(timer:FlxTimer)
+			{
+				inAttackState = false;
+			});
+		}
+		else
+		{
+			inAttackState = true;
+			attackStateTimer.reset(2);
+		}
 
 		var posX:Float = this.x;
 		var posY:Float = this.y;

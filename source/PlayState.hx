@@ -7,6 +7,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.display.FlxStarField.FlxStarField2D;
 import flixel.group.FlxGroup;
+import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
@@ -83,7 +84,22 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 
+		handleCamera();
 		handleCollisions();
+	}
+
+	function handleCamera()
+	{
+		if (Reg.player.inAttackState)
+		{
+			if (FlxG.camera.zoom < 1.15)
+				FlxG.camera.zoom += 0.01;
+		}
+		else
+		{
+			if (FlxG.camera.zoom > 1)
+				FlxG.camera.zoom -= 0.01;
+		}
 	}
 
 	function handleCollisions()
