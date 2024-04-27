@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -90,6 +91,8 @@ class Entity extends FlxSprite
 
 		knockBackFrom(objTakingDmg, objGivingDmg);
 		damageCooldown();
+
+		FlxG.sound.play(AssetPaths.hurt__wav, 2.0);
 	}
 
 	function damageCooldown()

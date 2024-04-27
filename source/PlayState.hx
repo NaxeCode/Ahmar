@@ -3,9 +3,12 @@ package;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.display.FlxStarField.FlxStarField2D;
 import flixel.group.FlxGroup;
 import flixel.ui.FlxBar;
+import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
@@ -15,11 +18,41 @@ class PlayState extends FlxState
 	var barHealth:FlxBar;
 	var barSecond:FlxBar;
 
+	var bounds:FlxTypedGroup<FlxSprite>;
+
 	override public function create()
 	{
 		super.create();
 
 		FlxG.debugger.drawDebug = true;
+
+		bounds = new FlxTypedGroup<FlxSprite>(4);
+		var wall = new FlxSprite(0, 0);
+		wall.makeGraphic(30, FlxG.height * 2, FlxColor.GREEN);
+		wall.immovable = true;
+		bounds.add(wall);
+		wall = new FlxSprite((FlxG.width * 2) - 30, 0);
+		wall.makeGraphic(30, FlxG.height * 2, FlxColor.GREEN);
+		wall.immovable = true;
+		bounds.add(wall);
+		wall = new FlxSprite(0, FlxG.height * 2);
+		wall.makeGraphic(FlxG.width * 2, 30, FlxColor.GREEN);
+		wall.immovable = true;
+		bounds.add(wall);
+		wall = new FlxSprite(0, -30);
+		wall.makeGraphic(FlxG.width * 2, 30, FlxColor.GREEN);
+		wall.immovable = true;
+		bounds.add(wall);
+		add(bounds);
+
+		var bg = new FlxStarField2D(0, 0, FlxG.width * 2, FlxG.height * 2, 200);
+		add(bg);
+
+		if (FlxG.sound.music == null) // don't restart the music if it's already playing
+		{
+			FlxG.sound.playMusic(AssetPaths.Sexy1__ogg, 0.15, true);
+			FlxG.sound.music.fadeIn(3, 0, 0.15);
+		}
 
 		Reg.player = new Player(0, 0, this);
 		Reg.player.health = Reg.player.maxHealth;
@@ -60,6 +93,9 @@ class PlayState extends FlxState
 
 		FlxG.overlap(enemyGroup, Reg.playerDashHitbox, handleOverlap);
 		FlxG.overlap(enemyGroup, Reg.playerAtkHitbox, handleOverlap);
+
+		FlxG.collide(enemyGroup, bounds);
+		FlxG.collide(Reg.player, bounds);
 	}
 
 	function handleOverlap(enemy:Enemy, hitbox:FlxObject)

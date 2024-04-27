@@ -61,4 +61,22 @@ Enemy ==
 - Have their type affect Player conditions, Damage dealt + defense modifier
 - Implement "waves" into the game, Add option to change from "Steady Waves" to "Mixed Waves".
 
+
 ===
+Enemy ideas:
+-Small enemy chips damage
+-Can be thrown by larger enemies to do bigger damage
+===
+
+It's hard trying to get the enemies to be defeatable.
+Crash bar for a model 1085 jackson crashbar
+It's difficult getting the enemies to be balanced.
+
+AGH, there is so much to do...
+I'm GOING TO GIVE IT EVERYTHING I'VE GOT! HAHA: )
+What are the raw emotions I want to play during the product? How do I really want to feel while fighting these *things*??
+I can't really think of a game that's too similar to this product
+
+As far as aesthetics go, I want something potentially Pastel Blue, Pink, and White.
+So it'd be a blue background... with Pink characters and white attacks / slashes? what would that kinda look like
+I guess I'm just trying to figure out 

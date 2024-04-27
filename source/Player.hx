@@ -409,10 +409,17 @@ class Player extends Entity
 		{
 			Reg.playerAtkHitbox.kill();
 		});
+
+		triggerSFX();
 	}
 
 	override function damageTaken(obj1:Entity, obj2:Entity)
 	{
 		super.damageTaken(obj1, obj2);
+	}
+
+	function triggerSFX()
+	{
+		FlxG.sound.play(AssetPaths.attack__wav, 2);
 	}
 }

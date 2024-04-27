@@ -38,7 +38,7 @@ class Enemy extends Entity
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		updateEnemyState();
+		// updateEnemyState();
 		updateEnemyBehaviour();
 		debugEnemy();
 	}
@@ -74,7 +74,7 @@ class Enemy extends Entity
 	{
 		if (knockedBack)
 		{
-			stayIdle();
+			currentState = EnemyState.Idle;
 			return;
 		}
 		switch (currentState)
@@ -90,7 +90,7 @@ class Enemy extends Entity
 
 	function stayIdle()
 	{
-		this.velocity.set(0, 0);
+		// this.velocity.set(0, 0);
 	}
 
 	function chasePlayer()
