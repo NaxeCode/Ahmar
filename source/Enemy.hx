@@ -32,7 +32,7 @@ class Enemy extends Entity
 		makeGraphic(16, 16, 0xff00ff00);
 		health = maxHealth;
 
-		this.drag.set(200, 200);
+		this.drag.set(300, 300);
 	}
 
 	override function update(elapsed:Float)

@@ -84,6 +84,7 @@ class Player extends Entity
 
 	function setPhysics()
 	{
+		knockBackPower = 200;
 		maxVelocity.set(maxVel_X, maxVel_Y);
 		drag.set(maxVelocity.x * 4, maxVelocity.y * 4);
 		this.immovable = true;

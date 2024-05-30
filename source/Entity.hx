@@ -32,7 +32,8 @@ class Entity extends FlxSprite
 
 	var dmgPower:Int = 3;
 	var defPower:Int = 1;
-	var knockBackPower:Int = 300;
+
+	public var knockBackPower:Int = 300;
 
 	public var knockedBack:Bool = false;
 	public var knockBackCooldown:Float = 1.0;
@@ -110,7 +111,7 @@ class Entity extends FlxSprite
 		moveTowardsWithForce(objEffected, objMovingAwayFrom, objMovingAwayFrom.knockBackPower, objMovingAwayFrom.knockBackPower);
 	}
 
-	function moveTowardsWithForce(objCurrent:FlxSprite, objTarget:FlxSprite, forceX:Int, forceY:Int)
+	public function moveTowardsWithForce(objCurrent:FlxSprite, objTarget:FlxSprite, forceX:Int, forceY:Int)
 	{
 		var xDiff = (objCurrent.x + objCurrent.origin.x) - (objTarget.x + objTarget.origin.x);
 		var yDiff = (objCurrent.y + objCurrent.origin.y) - (objTarget.y + objTarget.origin.y);

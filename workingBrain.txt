@@ -80,3 +80,18 @@ I can't really think of a game that's too similar to this product
 As far as aesthetics go, I want something potentially Pastel Blue, Pink, and White.
 So it'd be a blue background... with Pink characters and white attacks / slashes? what would that kinda look like
 I guess I'm just trying to figure out 
+
+=== Plan to get the combo mechanic juuuust right
+Psudo code:
+1. if Z button pressed
+2. combo attack starts
+3. player when attacking, hones in on enemy, starts wailing.
+
+basically the player's attacks should "connect" when fighting.
+I need some more information in order to make this work.
+How about I make the first hit NOT connect, and use that first hit to initiate the combo sequence?
+Yeah... then after that, within a time limit of a couple seconds, spamming Z gets you to hone in on that specific enemy
+it'll also solve the problem of having the other characters get caught in the cross-fire.
+
+
+--

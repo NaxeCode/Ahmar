@@ -71,7 +71,7 @@ class PlayState extends FlxState
 
 		enemyGroup = new FlxTypedGroup<Enemy>();
 		add(enemyGroup);
-		for (i in 0...4)
+		for (i in 0...1)
 		{
 			var w = FlxG.random.int(50, FlxG.width - 50);
 			var h = FlxG.random.int(FlxG.height - 50, 50);
@@ -108,7 +108,7 @@ class PlayState extends FlxState
 			FlxG.collide(Reg.player, enemyGroup, Reg.player.damageTaken);
 
 		FlxG.overlap(enemyGroup, Reg.playerDashHitbox, handleOverlap);
-		FlxG.overlap(enemyGroup, Reg.playerAtkHitbox, handleOverlap);
+		FlxG.overlap(enemyGroup, Reg.playerAtkHitbox, handleAttackOverlap);
 
 		FlxG.collide(enemyGroup, bounds);
 		FlxG.collide(Reg.player, bounds);
@@ -122,6 +122,33 @@ class PlayState extends FlxState
 		enemy.damageTaken(enemy, Reg.player);
 
 		new FlxTimer().start(2.5, function(timer:FlxTimer)
+		{
+			enemy.knockedBack = false;
+		});
+
+		enemy.knockedBack = true;
+	}
+
+	public static var comboFirstTime:Bool = false;
+
+	function handleAttackOverlap(enemy:Enemy, hitbox:FlxObject)
+	{
+		if (enemy.knockedBack)
+			return;
+
+		if (!comboFirstTime)
+		{
+			comboFirstTime = true;
+			Reg.player.moveTowardsWithForce(Reg.player, enemy, -1000, -1000);
+			new FlxTimer().start(0.05, function(timer:FlxTimer)
+			{
+				comboFirstTime = false;
+			});
+		}
+
+		enemy.damageTaken(enemy, Reg.player);
+
+		new FlxTimer().start(0.15, function(timer:FlxTimer)
 		{
 			enemy.knockedBack = false;
 		});
