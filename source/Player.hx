@@ -324,7 +324,7 @@ class Player extends Entity
 			staminaMP -= 15;
 		pointA_X = this.x;
 		pointA_Y = this.y;
-		var dashSpeed:Int = 7000;
+		var dashSpeed:Int = 25000;
 		var dashDuration:Float = 0.1;
 
 		var dashDirection:FlxPoint = new FlxPoint(0, 0);
