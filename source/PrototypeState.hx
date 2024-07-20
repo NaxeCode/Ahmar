@@ -77,13 +77,18 @@ class PrototypeState extends FlxState
 		floor.loadGraphic(AssetPaths.floor__png);
 		add(floor);
 
+		// Background / Pillars / Ropes / Entrance + Exit
+		var background = new FlxSprite();
+		background.loadGraphic(AssetPaths.background__png);
+		add(background);
+
 		// Player
 		addPlayer();
 
-		// Foreground / Pillars / Ropes / Entrance + Exit
-		var foreground = new FlxSprite();
-		foreground.loadGraphic(AssetPaths.foreground__png);
-		add(foreground);
+		// Foreground Pillars
+		var fg_pillars = new FlxSprite();
+		fg_pillars.loadGraphic(AssetPaths.fg_pillars__png);
+		add(fg_pillars);
 	}
 
 	function addPlayer()
