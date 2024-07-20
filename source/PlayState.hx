@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxBasic;
+import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -61,10 +62,16 @@ class PlayState extends FlxState
 		Reg.player.screenCenter();
 		add(Reg.player);
 
+		var uiCamera:FlxCamera = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
+		uiCamera.bgColor = FlxColor.TRANSPARENT;
+
 		barSecond = new FlxBar(10, 25, LEFT_TO_RIGHT, 50, 10, Reg.player, "staminaMP", 0, Reg.player.maxStaminaMP);
 		barSecond.createFilledBar(0xff001253, 0xff0037ff);
 		barSecond.scrollFactor.set(0, 0);
+		barSecond.cameras = [uiCamera];
 		add(barSecond);
+
+		FlxG.cameras.add(uiCamera, false);
 
 		FlxG.camera.follow(Reg.player, TOPDOWN);
 		FlxG.worldBounds.set(-FlxG.width, -FlxG.height, FlxG.width * 4, FlxG.height * 4);
