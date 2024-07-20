@@ -28,27 +28,7 @@ class PrototypeState extends FlxState
 
 		FlxG.debugger.drawDebug = true;
 
-		bounds = new FlxTypedGroup<FlxSprite>(4);
-		var wall = new FlxSprite(0, 0);
-		wall.makeGraphic(30, FlxG.height * 2, FlxColor.GREEN);
-		wall.immovable = true;
-		bounds.add(wall);
-		wall = new FlxSprite((FlxG.width * 2) - 30, 0);
-		wall.makeGraphic(30, FlxG.height * 2, FlxColor.GREEN);
-		wall.immovable = true;
-		bounds.add(wall);
-		wall = new FlxSprite(0, FlxG.height * 2);
-		wall.makeGraphic(FlxG.width * 2, 30, FlxColor.GREEN);
-		wall.immovable = true;
-		bounds.add(wall);
-		wall = new FlxSprite(0, -30);
-		wall.makeGraphic(FlxG.width * 2, 30, FlxColor.GREEN);
-		wall.immovable = true;
-		bounds.add(wall);
-		add(bounds);
-
-		var bg = new FlxStarField2D(0, 0, FlxG.width * 2, FlxG.height * 2, 200);
-		add(bg);
+		level_create();
 
 		if (FlxG.sound.music == null) // don't restart the music if it's already playing
 		{
@@ -85,6 +65,17 @@ class PrototypeState extends FlxState
 			var enemy:Enemy = new Enemy(w, h, this);
 			enemyGroup.add(enemy);
 		}
+	}
+
+	function level_create()
+	{
+		// Background Color
+		FlxG.camera.bgColor = FlxColor.fromRGB(126, 126, 126);
+
+		// Floor
+		var floor = new FlxSprite(0, 0);
+		floor.loadGraphic(AssetPaths.floor__png);
+		add(floor);
 	}
 
 	override public function update(elapsed:Float)
