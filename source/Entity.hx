@@ -23,7 +23,7 @@ enum EntityType
 
 class Entity extends FlxSprite
 {
-	var barHealth:FlxBar;
+	public var barHealth:FlxBar;
 
 	public var maxHealth:Int = 25;
 
@@ -41,13 +41,13 @@ class Entity extends FlxSprite
 	public function new(X:Int, Y:Int, state:FlxState)
 	{
 		super(X, Y);
-		addHealthBar(state);
+		// addHealthBar(state);
 	}
 
-	function addHealthBar(currentState:FlxState)
+	function addHealthBar(currentState:FlxState, entity:FlxSprite)
 	{
-		barHealth = new FlxBar(0, 0, LEFT_TO_RIGHT, 50, 3, this, "health", 0, maxHealth);
-		barHealth.trackParent(-13, -10);
+		barHealth = new FlxBar(0, 0, LEFT_TO_RIGHT, 100, 10, this, "health", 0, maxHealth);
+		barHealth.trackParent(Std.int(entity.width / 4), -Std.int(entity.height / 9));
 		currentState.add(barHealth);
 	}
 
