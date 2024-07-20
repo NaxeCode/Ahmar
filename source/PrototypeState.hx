@@ -54,6 +54,7 @@ class PrototypeState extends FlxState
 		FlxG.camera.follow(Reg.player, TOPDOWN);
 		FlxG.worldBounds.set(0, 0, level_w, level_h);
 		FlxG.camera.setScrollBounds(0, level_w, 0, level_h);
+		FlxG.camera.antialiasing = true;
 
 		enemyGroup = new FlxTypedGroup<Enemy>();
 		add(enemyGroup);
