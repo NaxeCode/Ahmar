@@ -30,7 +30,7 @@ class Player extends Entity
 
 	var attackStateTimer:FlxTimer;
 
-	static inline var MOVEMENT_SPEED:Int = 2;
+	static inline var MOVEMENT_SPEED:Int = 6;
 
 	public var playerDashing:Bool = false;
 
@@ -56,8 +56,8 @@ class Player extends Entity
 	var moveX:Float = 0;
 	var moveY:Float = 0;
 
-	var maxVel_X:Int = 200;
-	var maxVel_Y:Int = 220;
+	var maxVel_X:Int = 400;
+	var maxVel_Y:Int = 420;
 
 	// In seconds...
 	var staminaRegenEvery:Float = 0.5;
@@ -77,7 +77,7 @@ class Player extends Entity
 
 	function renderPlayer()
 	{
-		makeGraphic(24, 34, 0xffaa1111);
+		makeGraphic(200, 200, 0xffaa1111);
 		this.setFacingFlip(LEFT, true, false);
 		this.setFacingFlip(RIGHT, false, false);
 	}
