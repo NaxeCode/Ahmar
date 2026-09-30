@@ -368,7 +368,7 @@ class Player extends Entity
 	function distanceNoBias(num1:Float, num2:Float):Int
 	{
 		var dx:Float = (num1) - (num2);
-		return Std.int(Math.sqrt(dx * dx));
+		return Std.int(Math.abs(dx));
 	}
 
 	function goAttack()
