@@ -1,3 +1,5 @@
+<img src=".github/brand/logo.svg" width="80" alt="" />
+
 # Ahmar
 
 A top-down action combat prototype in HaxeFlixel, in the style of Hyper Light Drifter: dash through enemies, close-range attacks, stamina and knockback.
@@ -43,6 +45,10 @@ Builds go to `export/`. Mobile builds get an on-screen virtual pad.
 ## Status
 
 Prototype, paused since July 2024. Combat, dash and enemy AI work in a single arena; character sprites exist as concept art in `concept art/` but are not wired in yet. Ideas that are noted but not built: rock-paper-scissors player types with stat modifiers, and post-hit invincibility (`workingBrain.txt`).
+
+## License
+
+MIT. See [LICENSE](LICENSE).
 
 ---
 <sub>Built by [Aladdin Ali](https://github.com/NaxeCode) · [naxecode.github.io](https://naxecode.github.io)</sub>
