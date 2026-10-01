@@ -55,6 +55,6 @@ jobs:
               echo "PR $n changes agent or reviewer rules; leaving it for review."
               continue
             fi
-            gh pr merge "$n" -R "$REPO" --squash --delete-branch
+            gh pr merge "$n" -R "$REPO" --rebase --delete-branch
             echo "Merged docs-only PR $n."
           done
