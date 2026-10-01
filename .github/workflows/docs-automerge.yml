@@ -1,0 +1,60 @@
+# Merges docs-only PRs opened by the repo owner, so README/Markdown edits
+# don't need a manual merge. Anything else still waits for review.
+# Tracked in Linear: CAD-141.
+name: Docs auto-merge
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+  workflow_dispatch: # sweep: merge already-open docs-only PRs
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: docs-automerge-${{ github.event.pull_request.number || 'sweep' }}
+  cancel-in-progress: true
+
+jobs:
+  automerge:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.draft == false &&
+       github.event.pull_request.head.repo.full_name == github.repository &&
+       github.event.pull_request.user.login == github.repository_owner)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge docs-only PRs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          # Docs: any Markdown file, LICENSE, or brand assets.
+          allowed='^(.*\.md|LICENSE|\.github/brand/.*)$'
+          # Agent and reviewer instructions always get a human review.
+          blocked='(^|/)(AGENTS|CLAUDE)\.md$'
+
+          prs="${PR:-}"
+          if [ -z "$prs" ]; then
+            prs=$(gh pr list -R "$REPO" --state open --author "$OWNER" \
+              --json number,isDraft --jq '.[] | select(.isDraft | not) | .number')
+          fi
+
+          for n in $prs; do
+            files=$(gh pr view "$n" -R "$REPO" --json files --jq '.files[].path')
+            if [ -z "$files" ]; then continue; fi
+            if grep -Evq "$allowed" <<<"$files"; then
+              echo "PR $n touches non-docs files; leaving it for review."
+              continue
+            fi
+            if grep -Eq "$blocked" <<<"$files"; then
+              echo "PR $n changes agent or reviewer rules; leaving it for review."
+              continue
+            fi
+            gh pr merge "$n" -R "$REPO" --squash --delete-branch
+            echo "Merged docs-only PR $n."
+          done
