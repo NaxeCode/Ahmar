@@ -46,6 +46,14 @@ Builds go to `export/`. Mobile builds get an on-screen virtual pad.
 
 Prototype, paused since July 2024. Combat, dash and enemy AI work in a single arena; character sprites exist as concept art in `concept art/` but are not wired in yet. Ideas that are noted but not built: rock-paper-scissors player types with stat modifiers, and post-hit invincibility (`workingBrain.txt`).
 
+## How this project is run
+
+[![tracked in Linear](.github/brand/badges/run-linear.svg)](https://linear.app) [![AI-reviewed · Codex](.github/brand/badges/run-codex.svg)](#how-this-project-is-run) [![PR-only main](.github/brand/badges/run-main.svg)](#how-this-project-is-run)
+
+- **Planning:** tracked in Linear as initiatives → projects → milestones → issues; branch names and PR titles carry the issue ID.
+- **Review:** every pull request gets a Codex review before merge.
+- **Guardrails:** the default branch changes only through pull requests (GitHub ruleset).
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
