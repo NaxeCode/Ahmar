@@ -13,6 +13,10 @@ and receipts. Keep private planning in a private Project draft until it is safe 
 publish in this repository. If Issues is disabled on a fork, use that private draft
 as the tracking record and identify the owning repository.
 
-Follow this repository's branch, PR and human-review requirements. Moving a task
-or saving a recommendation does not authorize its implementation or merge.
+Every change goes through a pull request. Every PR requires Aladdin's personal
+review of its current changes. Agents leave PRs unmerged: no self-approval,
+auto-merge, direct integration-branch pushes or relaxed protections. Passing CI
+or a machine review does not replace his review. Moving a task or saving a
+recommendation does not authorize implementation. Follow any stricter repository
+identity, branch and validation requirements.
 
